@@ -35,4 +35,35 @@ router.get('/:id', (req, res) => {
 })
 
 
+router.post('/', (req, res) => {
+  const body = req.body;
+  products.push(body)
+  res.json({
+    message: 'created',
+    data: products
+  })
+})
+
+
+//el put sirve para ingresar y actualizar
+//diferencias entre el put y el patch -> el post se deben de mandar todos los datos y el patch solo recibe los datos que quieres actualizar
+
+router.patch('/:id', (req, res) => {
+  const { id } = req.params;
+  const body = req.body;
+
+  res.json({
+    message: 'update',
+    data: body, id
+  })
+})
+
+router.delete('/:id', (req, res) => {
+  const { id } = req.params;
+
+  res.json({
+    message: 'deleted',
+    id
+  })
+})
 module.exports = router
