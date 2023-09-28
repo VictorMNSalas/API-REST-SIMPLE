@@ -46,7 +46,16 @@ class UserService {
   }
 
   update(id, data) {
-
+    const index = this.users.findIndex((element) => element.id == id)
+    if (index == -1) {
+      throw new Error('The id is not valied')
+    } else {
+      const user = this.users[index]
+      const userUpdate = {
+        ...user, ...data
+      }
+      return userUpdate
+    }
   }
 
   delete(id) {

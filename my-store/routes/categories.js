@@ -2,19 +2,16 @@ const express = require('express');
 const { faker } = require('@faker-js/faker');
 const router = express.Router()
 
+const CategoriesServices = require('../services/categories')
+
+const services = new CategoriesServices()
+
 // se le manda un limite de elementos a mostrar con query -> http://localhost:3000/products?size=2
 router.get('/', (req, res) => {
-  const { size } = req.query
-  const limit = size || 10
-  const products = []
-  for (let index = 0; index < limit; index++) {
-    products.push({
-      name: faker.commerce.department(),
-      content_items: faker.random.numeric(5),
-      company_name:  faker.company.name()
-    })
-  }
-  res.send(products)
+  const categories = services.find()
+  res.status(200).json({
+    message: 'Users', data: categories
+  })
 })
 
 
@@ -26,21 +23,17 @@ router.get('/filter', (req, res) => {
 
 router.get('/:id', (req, res) => {
   const { id } = req.params
-  res.json({
-    id,
-    name: faker.commerce.department(),
-    content_items: faker.random.numeric(5),
-    company_name:  faker.company.name()
-  })
+  const user = services.findOne(id)
+  res.json(user)
 })
 
 
 router.post('/', (req, res) => {
   const body = req.body;
-  products.push(body)
+  const newCategorie = services.create(body)
   res.json({
     message: 'created',
-    data: products
+    data: newCategorie
   })
 })
 
@@ -51,19 +44,19 @@ router.post('/', (req, res) => {
 router.patch('/:id', (req, res) => {
   const { id } = req.params;
   const body = req.body;
-
+  const categorie = services.update(id, body)
   res.json({
     message: 'update',
-    data: body, id
+    data: categorie
   })
 })
 
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
-
+const categorie = services.delete(id)
   res.json({
     message: 'deleted',
-    id
+    categorie
   })
 })
 module.exports = router

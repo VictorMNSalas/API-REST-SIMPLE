@@ -7,7 +7,7 @@ const services = new UserService()
 
 // se le manda un limite de elementos a mostrar con query -> http://localhost:3000/products?size=2
 router.get('/', (req, res) => {
- // const { size } = req.query
+  // const { size } = req.query
   const users = services.find()
   res.send(users)
 })
@@ -38,17 +38,17 @@ router.post('/', (req, res) => {
 router.patch('/:id', (req, res) => {
   const { id } = req.params;
   const body = req.body;
-const user = services.update(id, body)
+  const user = services.update(id, body)
   res.json({
-    user,
+
     message: 'update',
-    data: body, id
+    data: user
   })
 })
 
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
-const response = services.delete(id)
+  const response = services.delete(id)
   res.json({
     response,
     id
