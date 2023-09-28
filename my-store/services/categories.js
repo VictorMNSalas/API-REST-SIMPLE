@@ -20,11 +20,11 @@ class CategoriesServices {
     }
   }
 
-  find() {
+  async find() {
     return this.categories;
   }
 
-  findOne(id) {
+  async findOne(id) {
     const index = this.categories.findIndex(index => index.id == id)
     if (index == -1) {
       throw new Error('There are not any categorie with that id...')
@@ -33,7 +33,7 @@ class CategoriesServices {
     }
   }
 
-  create(body) {
+  async create(body) {
     const newCategorie = {
       id: this.categories.length + 1,
       ...body
@@ -42,7 +42,7 @@ class CategoriesServices {
     return newCategorie
   }
 
-  update(id, changes) {
+  async update(id, changes) {
     const index = this.categories.findIndex(categorie => categorie.id == id)
     if (index == -1) {
       throw new Error('The id is invalid')
@@ -58,16 +58,16 @@ class CategoriesServices {
   }
 
 
-  delete(id) {
+  async delete(id) {
     const index = this.categories.findIndex(categorie => categorie.id == id)
     if (index == -1) {
       throw new Error('The id is invalid')
     } else {
       this.categories.slice(index, 1)
-      return {message: 'element deleted'}
+      return { message: 'element deleted' }
     }
   }
- 
+
 }
 
 module.exports = CategoriesServices

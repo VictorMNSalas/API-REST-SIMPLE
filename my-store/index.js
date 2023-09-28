@@ -5,6 +5,8 @@ const routerApi = require('./routes')
 const { faker } = require('@faker-js/faker'); //es para que genere elementos falsos para pruebas
 
 
+const { logErrors,boomErrorHandler, errorHandler } = require('./middlewares/error.handler')
+
 //crear la app y su puerto
 const app = express();
 const port = 3000;
@@ -23,8 +25,16 @@ app.get('/nueva-ruta', (req, res) => {
   res.send('Hello this is a new route')
 })
 
-//le mandamos el parametro app a la funcion que esta en la careta routes en el archivo index.js 
+//le mandamos el parametro app a la funcion que esta en la careta routes en el archivo index.js
 routerApi(app)
+
+
+//esto se ejecuta mediante secuencial primero el logerror y despues el otro
+app.use(logErrors)
+app.use(boomErrorHandler)
+app.use(errorHandler)
+
+
 /*
 
 

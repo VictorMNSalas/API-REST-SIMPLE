@@ -7,7 +7,7 @@ const CategoriesServices = require('../services/categories')
 const services = new CategoriesServices()
 
 // se le manda un limite de elementos a mostrar con query -> http://localhost:3000/products?size=2
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   const categories = services.find()
   res.status(200).json({
     message: 'Users', data: categories
@@ -16,19 +16,26 @@ router.get('/', (req, res) => {
 
 
 //CuANDO hay rutas similares como esta y el de abajo, para que no choque hay que poner antes la consulta get que tenga una ruta especifica y despues la dinamica :id
-router.get('/filter', (req, res) => {
+router.get('/filter', async (req, res) => {
 
 })
 
 
-router.get('/:id', (req, res) => {
-  const { id } = req.params
-  const user = services.findOne(id)
-  res.json(user)
+router.get('/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+    const user = services.findOne(id)
+    res.json(user)
+  } catch (error) {
+    res.status(404).json({
+      message: error.message
+    })
+  }
+
 })
 
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const body = req.body;
   const newCategorie = services.create(body)
   res.json({
@@ -41,22 +48,36 @@ router.post('/', (req, res) => {
 //el put sirve para ingresar y actualizar
 //diferencias entre el put y el patch -> el post se deben de mandar todos los datos y el patch solo recibe los datos que quieres actualizar
 
-router.patch('/:id', (req, res) => {
-  const { id } = req.params;
-  const body = req.body;
-  const categorie = services.update(id, body)
-  res.json({
-    message: 'update',
-    data: categorie
-  })
+router.patch('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const body = req.body;
+    const categorie = services.update(id, body)
+    res.json({
+      message: 'update',
+      data: categorie
+    })
+  } catch (error) {
+    res.status(404).json({
+      message: error.message
+    })
+  }
+
 })
 
-router.delete('/:id', (req, res) => {
-  const { id } = req.params;
-const categorie = services.delete(id)
-  res.json({
-    message: 'deleted',
-    categorie
-  })
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const categorie = services.delete(id)
+    res.json({
+      message: 'deleted',
+      categorie
+    })
+  } catch (error) {
+    res.status(404).json({
+      message: error.message
+    })
+  }
+
 })
 module.exports = router

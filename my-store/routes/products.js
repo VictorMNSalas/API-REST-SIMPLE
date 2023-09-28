@@ -7,23 +7,33 @@ const router = express.Router()
 const services = new ProductsService()
 
 // se le manda un limite de elementos a mostrar con query -> http://localhost:3000/products?size=2
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   // const { size } = req.query
-  const products = services.find()
+  const products = await services.find()
   res.json(products)
 })
 
 
 //CuANDO hay rutas similares como esta y el de abajo, para que no choque hay que poner antes la consulta get que tenga una ruta especifica y despues la dinamica :id
-router.get('/filter', (req, res) => {
-
+router.get('/filter', async (req, res, next) => {
+  try {
+    const response = await services.errorMiddleware()
+    res.json(response)
+  } catch (error) {
+    next(error)
+  }
 })
 
 
-router.get('/:id', (req, res) => {
-  const { id } = req.params
-  const product = services.findOne(id)
-  res.json(product)
+router.get('/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params
+    const product = await services.findOne(id)
+    res.json(product)
+  } catch (error) {
+    next(error)
+  }
+
 
   /*
   if (id === '999') {
@@ -43,7 +53,7 @@ router.get('/:id', (req, res) => {
 */
 })
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const body = req.body;
   const newProduct = services.create(body)
   //El status se agrega para usar los codigos de http
@@ -53,16 +63,23 @@ router.post('/', (req, res) => {
 
 //PATCH (Actualizar un recurso parcialmente)
 //es decir que en el patch solo modificara los elementos que le envies
-router.patch('/:id', (req, res) => {
-  const { id } = req.params;
-  const body = req.body;
-  const product = services.update(id, body)
-  res.json(product)
+router.patch('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const body = req.body;
+    const product = await services.update(id, body)
+    res.json(product)
+  } catch (error) {
+    res.status(404).json({
+      message: error.message
+    })
+  }
+
 })
 
 //PUT (Actualizar un recurso completo)
 //es decir que el put modifica todo el elemento es decir que debes de enviarle todos los parametros
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const body = req.body;
 
@@ -71,9 +88,16 @@ router.put('/:id', (req, res) => {
     data: body, id
   })
 })
-router.delete('/:id', (req, res) => {
-  const { id } = req.params;
-  const response = services.delete(id)
-  res.json(response)
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const response = services.delete(id)
+    res.json(response)
+  } catch (error) {
+    res.status(404).json({
+      message: error.message
+    })
+  }
+
 })
 module.exports = router

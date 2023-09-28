@@ -1,5 +1,5 @@
 const { faker } = require('@faker-js/faker');
-
+const boom = require('@hapi/boom') // esta define en si los codigos de server status automatico
 
 //En servicios se usa  POO (programacion orientada a objetos)
 
@@ -20,12 +20,13 @@ class ProductsService {
         id: index,
         name: faker.commerce.productName(),
         price: parseInt(faker.commerce.price(), 10),
-        image: faker.image.imageUrl()
+        image: faker.image.imageUrl(),
+        isBlock: faker.datatype.boolean()
       })
     }
   }
 
-  create(data) {
+  async create(data) {
     const newProduct = {
       id: this.products.length + 1,
       ...data
@@ -36,18 +37,36 @@ class ProductsService {
   }
 
   find() {
-    return this.products
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(this.products)
+      }, 5000)
+    })
   }
 
-  findOne(id) {
-    return this.products.find(item => item.id == id)
+  async errorMiddleware() {
+    const name = this.getTotal()
+    return name
+  }
+  async findOne(id) {
+
+    const index = this.products.findIndex(element => element.id == id)
+    if (index == -1) {
+      throw new boom.notFound('Product not found') //forma de usar el boom para definir un error mas sencillo
+    }
+    if(this.products[index].isBlock){
+      throw new boom.conflict('Product is block')
+    }else {
+      return this.products[index]
+    }
+
   }
 
-  update(id, changes) {
+  async update(id, changes) {
     const index = this.products.findIndex(item => item.id == id)
-    if(index == -1){
+    if (index == -1) {
       throw new Error('Product not find')
-    }else{
+    } else {
       const product = this.products[index]
       this.products[index] = {
         ...product, ...changes
@@ -56,13 +75,13 @@ class ProductsService {
     }
   }
 
-  delete(id) {
+  async delete(id) {
     const index = this.products.findIndex(item => item.id == id)
-    if(index == -1){
+    if (index == -1) {
       throw new Error('Product not find')
-    }else{
+    } else {
       this.products.slice(index, 1)
-      return {message: 'Product deleted'}
+      return { message: 'Product deleted' }
     }
   }
 }

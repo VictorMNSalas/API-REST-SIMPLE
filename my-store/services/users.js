@@ -21,7 +21,7 @@ class UserService {
     }
   }
 
-  create(data) {
+  async create(data) {
     const newUser = {
       id: this.users.length + 1,
       ...data
@@ -31,11 +31,11 @@ class UserService {
     return newUser
   }
 
-  find() {
+  async find() {
     return this.users
   }
 
-  findOne(id) {
+  async findOne(id) {
     const index = this.users.findIndex(element => element.id == id)
     if (index == -1) {
       throw new Error('Theres any user with that id')
@@ -45,7 +45,7 @@ class UserService {
 
   }
 
-  update(id, data) {
+  async update(id, data) {
     const index = this.users.findIndex((element) => element.id == id)
     if (index == -1) {
       throw new Error('The id is not valied')
@@ -58,7 +58,7 @@ class UserService {
     }
   }
 
-  delete(id) {
+  async delete(id) {
     const index = this.users.findIndex((element) => element.id == id)
     if (index == -1) {
       throw new Error('The id is not valied')
