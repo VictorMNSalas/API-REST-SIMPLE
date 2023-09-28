@@ -9,7 +9,7 @@ const { faker } = require('@faker-js/faker'); //es para que genere elementos fal
 const app = express();
 const port = 3000;
 
-//permite recibir informacion de tipo json mediante post 
+//permite recibir informacion de tipo json mediante post
 app.use(express.json())
 
 
@@ -23,7 +23,7 @@ app.get('/nueva-ruta', (req, res) => {
   res.send('Hello this is a new route')
 })
 
-
+//le mandamos el parametro app a la funcion que esta en la careta routes en el archivo index.js 
 routerApi(app)
 /*
 
