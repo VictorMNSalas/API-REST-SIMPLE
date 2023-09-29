@@ -9,7 +9,7 @@ class UserService {
   }
 
   generete() {
-    const limit = 100
+    const limit = 10
     for (let index = 1; index <= limit; index++) {
       this.users.push({
         id: index,
@@ -22,7 +22,7 @@ class UserService {
   }
 
   async create(data) {
-    const newUser = {
+    const newUser = await {
       id: this.users.length + 1,
       ...data
     }
@@ -39,9 +39,9 @@ class UserService {
     const index = this.users.findIndex(element => element.id == id)
     if (index == -1) {
       throw new boom.notFound('Theres any user with that id')
-    } else {
-      return this.users[index]
     }
+    return this.users[index]
+
 
   }
 
@@ -62,10 +62,12 @@ class UserService {
     const index = this.users.findIndex((element) => element.id == id)
     if (index == -1) {
       throw new Error('The id is not valied')
-    } else {
-      this.users.slice(index, 1)
-      return { message: 'User deleted' }
     }
+    console.log(this.users[index])
+    this.users.splice(index,1)
+    console.log(this.users)
+    return { message: 'User deleted',  index: index }
+
   }
 }
 

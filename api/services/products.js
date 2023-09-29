@@ -16,7 +16,7 @@ class ProductsService {
   //FUNCIONES QUE GENERAN ALGUNA ACCION QUE QUERRAMOS
 
   generete() {
-    const limit = 100
+    const limit = 10
     for (let index = 0; index < limit; index++) {
       this.products.push({
         id: faker.string.uuid(),
@@ -29,8 +29,8 @@ class ProductsService {
   }
 
   async create(data) {
-    const newProduct = {
-      id:faker.string.uuid(), //this.products.length + 1,
+    const newProduct = await {
+      id: faker.string.uuid(), //this.products.length + 1,
       ...data
     }
 
@@ -42,30 +42,30 @@ class ProductsService {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve(this.products)
-      }, 5000)
+      }, 1000)
     })
   }
 
   async errorMiddleware() {
-    const name = this.getTotal()
+    const name = await this.getTotal()
     return name
   }
   async findOne(id) {
 
-    const index = this.products.findIndex(element => element.id == id)
+    const index = await this.products.findIndex(element => element.id == id)
     if (index == -1) {
       throw new boom.notFound('Product not found') //forma de usar el boom para definir un error mas sencillo
     }
-    if(this.products[index].isBlock){
+    if (this.products[index].isBlock) {
       throw new boom.conflict('Product is block')
-    }else {
+    } else {
       return this.products[index]
     }
 
   }
 
   async update(id, changes) {
-    const index = this.products.findIndex(item => item.id == id)
+    const index = await this.products.findIndex(item => item.id == id)
     if (index == -1) {
       throw new Error('Product not find')
     } else {
@@ -81,10 +81,10 @@ class ProductsService {
     const index = this.products.findIndex(item => item.id == id)
     if (index == -1) {
       throw new boom.notFound('Product not exist')
-    } else {
-      this.products.slice(index, 1)
-      return { message: 'Product deleted' }
     }
+    this.products.splice(index, 1)
+    return { message: 'Product deleted' }
+
   }
 }
 

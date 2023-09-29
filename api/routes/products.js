@@ -99,7 +99,7 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const response = services.delete(id)
+    const response = await services.delete(id)
     res.json(response)
   } catch (error) {
     res.status(404).json({
