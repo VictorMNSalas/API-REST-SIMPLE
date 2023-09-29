@@ -21,7 +21,7 @@ const whiteList = ['http://localhost:8080', 'https://my-app.com','http://localho
 const options = {
   origin: (origin, callback) => { whiteList.includes(origin) ? callback(null, true) : callback(new Error('No permitido')) }
 }
-app.use(cors(options)) //habilitar cualquier dominio de entrada
+app.use(cors()) //habilitar cualquier dominio de entrada
 
 //Generar una ruta principal default, estos siempre tienen un callback la cual recibe un request y response
 app.get('/api/', (req, res) => {
