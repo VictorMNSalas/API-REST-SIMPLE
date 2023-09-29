@@ -11,25 +11,25 @@ const { logErrors, boomErrorHandler, errorHandler } = require('./middlewares/err
 
 //crear la app y su puerto
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 //permite recibir informacion de tipo json mediante post
 app.use(express.json())
 
 
-const whiteList = ['http://localhost:8080', 'https://my-app.com']
+const whiteList = ['http://localhost:8080', 'https://my-app.com','http://localhost:3000']
 const options = {
   origin: (origin, callback) => { whiteList.includes(origin) ? callback(null, true) : callback(new Error('No permitido')) }
 }
 app.use(cors(options)) //habilitar cualquier dominio de entrada
 
 //Generar una ruta principal default, estos siempre tienen un callback la cual recibe un request y response
-app.get('/', (req, res) => {
+app.get('/api/', (req, res) => {
   res.send('Hello server in express')
 })
 
 
-app.get('/nueva-ruta', (req, res) => {
+app.get('/api/nueva-ruta', (req, res) => {
   res.send('Hello this is a new route')
 })
 
