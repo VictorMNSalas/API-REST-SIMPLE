@@ -1,6 +1,8 @@
 const { faker } = require('@faker-js/faker');
 const boom = require('@hapi/boom') // esta define en si los codigos de server status automatico
 
+
+
 //En servicios se usa  POO (programacion orientada a objetos)
 
 class ProductsService {
@@ -17,7 +19,7 @@ class ProductsService {
     const limit = 100
     for (let index = 0; index < limit; index++) {
       this.products.push({
-        id: index,
+        id: faker.string.uuid(),
         name: faker.commerce.productName(),
         price: parseInt(faker.commerce.price(), 10),
         image: faker.image.imageUrl(),
@@ -28,7 +30,7 @@ class ProductsService {
 
   async create(data) {
     const newProduct = {
-      id: this.products.length + 1,
+      id:faker.string.uuid(), //this.products.length + 1,
       ...data
     }
 
@@ -78,7 +80,7 @@ class ProductsService {
   async delete(id) {
     const index = this.products.findIndex(item => item.id == id)
     if (index == -1) {
-      throw new Error('Product not find')
+      throw new boom.notFound('Product not exist')
     } else {
       this.products.slice(index, 1)
       return { message: 'Product deleted' }

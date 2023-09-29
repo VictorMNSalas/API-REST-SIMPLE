@@ -1,5 +1,11 @@
 const express = require('express');
 const ProductsService = require('../services/products');
+
+//-------------- Process JOI
+const validationHandler = require('../middlewares/validator.handler')
+const { createPriductSchema, updatePriductSchema, getPriductSchema } = require('../schemas/products.schema')
+//-------------------------
+
 const router = express.Router()
 
 
@@ -25,45 +31,47 @@ router.get('/filter', async (req, res, next) => {
 })
 
 
-router.get('/:id', async (req, res, next) => {
-  try {
-    const { id } = req.params
-    const product = await services.findOne(id)
-    res.json(product)
-  } catch (error) {
-    next(error)
-  }
+router.get('/:id',
+  validationHandler(getPriductSchema, 'params'),
+  async (req, res, next) => {
+    try {
+      const { id } = req.params
+      const product = await services.findOne(id)
+      res.json(product)
+    } catch (error) {
+      next(error)
+    }
 
 
-  /*
-  if (id === '999') {
-    //404 es para mostrar que no se encontro el producto
-    res.status(404).json({
-     message: 'Not Found'
-    })
-  } else {
-    //200 es un ok
-    res.status(200).json({
-      id,
-      name: faker.commerce.productName(),
-      price: parseInt(faker.commerce.price(), 10),
-      image: faker.image.imageUrl()
-    })
-  }
-*/
-})
+    /*
+    if (id === '999') {
+      //404 es para mostrar que no se encontro el producto
+      res.status(404).json({
+       message: 'Not Found'
+      })
+    } else {
+      //200 es un ok
+      res.status(200).json({
+        id,
+        name: faker.commerce.productName(),
+        price: parseInt(faker.commerce.price(), 10),
+        image: faker.image.imageUrl()
+      })
+    }
+  */
+  })
 
-router.post('/', async (req, res) => {
+router.post('/', validationHandler(createPriductSchema, 'body'), async (req, res) => {
   const body = req.body;
-  const newProduct = services.create(body)
+  const newProduct = await services.create(body)
   //El status se agrega para usar los codigos de http
-  res.status(201).json(newProduct)
+  res.json(newProduct)
 })
 
 
 //PATCH (Actualizar un recurso parcialmente)
 //es decir que en el patch solo modificara los elementos que le envies
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', validationHandler(getPriductSchema, 'params'), validationHandler(updatePriductSchema, 'body'), async (req, res) => {
   try {
     const { id } = req.params;
     const body = req.body;

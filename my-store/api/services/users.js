@@ -1,5 +1,5 @@
 const { faker } = require('@faker-js/faker');
-
+const boom = require('@hapi/boom')
 
 class UserService {
 
@@ -38,7 +38,7 @@ class UserService {
   async findOne(id) {
     const index = this.users.findIndex(element => element.id == id)
     if (index == -1) {
-      throw new Error('Theres any user with that id')
+      throw new boom.notFound('Theres any user with that id')
     } else {
       return this.users[index]
     }
@@ -48,7 +48,7 @@ class UserService {
   async update(id, data) {
     const index = this.users.findIndex((element) => element.id == id)
     if (index == -1) {
-      throw new Error('The id is not valied')
+      throw new boom.badRequest('The id is not valied')
     } else {
       const user = this.users[index]
       const userUpdate = {

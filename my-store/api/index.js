@@ -5,7 +5,9 @@ const routerApi = require('./routes')
 const { faker } = require('@faker-js/faker'); //es para que genere elementos falsos para pruebas
 
 
-const { logErrors,boomErrorHandler, errorHandler } = require('./middlewares/error.handler')
+const cors = require('cors')
+
+const { logErrors, boomErrorHandler, errorHandler } = require('./middlewares/error.handler')
 
 //crear la app y su puerto
 const app = express();
@@ -14,6 +16,12 @@ const port = 3000;
 //permite recibir informacion de tipo json mediante post
 app.use(express.json())
 
+
+const whiteList = ['http://localhost:8080', 'https://my-app.com']
+const options = {
+  origin: (origin, callback) => { whiteList.includes(origin) ? callback(null, true) : callback(new Error('No permitido')) }
+}
+app.use(cors(options)) //habilitar cualquier dominio de entrada
 
 //Generar una ruta principal default, estos siempre tienen un callback la cual recibe un request y response
 app.get('/', (req, res) => {
