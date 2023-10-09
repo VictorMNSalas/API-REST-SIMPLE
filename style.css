@@ -147,8 +147,6 @@ section {
       font-size: 1.2rem;
       position: relative;
       transition: all 10s cubic-bezier(0.23, 1, 0.320, 1);
-
-
     }
 
     & p:hover ::after {
@@ -163,7 +161,7 @@ section {
       right: 1px;
       top: -30px;
       cursor: none;
-      animation: copy 3s infinite alternate-reverse;
+      animation: copy 3s infinite ease-in-out;
     }
   }
 
