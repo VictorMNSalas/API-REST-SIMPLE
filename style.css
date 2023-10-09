@@ -20,7 +20,7 @@ body {
   height: fit-content;
   top: 0px;
   right: 0px;
-  animation: alert 5s;
+  animation: alert 5s alternate;
   transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
 }
 
@@ -163,7 +163,7 @@ section {
       right: 1px;
       top: -30px;
       cursor: none;
-      animation: copy 3s infinite ease-in-out;
+      animation: copy 3s infinite alternate-reverse;
     }
   }
 
