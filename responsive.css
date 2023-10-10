@@ -1,0 +1,113 @@
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+
+  .circle {
+    width: 150px;
+    height: 150px;
+  }
+
+  .card {
+    width: 80vw;
+  }
+
+  section {
+    width: 90%;
+    height: fit-content;
+
+
+    & span {
+
+      & p {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: copy;
+      }
+
+      & p:hover ::after {
+        display: none;
+      }
+    }
+
+
+  }
+}
+@media screen and (min-width: 481px) and (max-width: 767px) {
+
+  .circle {
+    width: 150px;
+    height: 150px;
+  }
+
+  .card {
+    width: 80vw;
+  }
+
+  section {
+    width: 90%;
+    height: fit-content;
+
+
+    & span {
+
+      & p {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: copy;
+      }
+
+      & p:hover ::after {
+        display: none;
+      }
+    }
+
+
+  }
+}
+@media screen and (max-width : 480px) {
+
+  header {
+    & a {
+      padding: 1rem 0rem;
+      width: 10%;
+    }
+  }
+
+  .circle {
+    width: 100px;
+    height: 100px;
+  }
+
+  .card {
+    width: 80vw;
+  }
+
+  section {
+    width: 90%;
+    height: fit-content;
+
+
+    & span {
+
+      & p {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: copy;
+      }
+
+      & p:hover ::after {
+        display: none;
+      }
+    }
+
+
+  }
+
+  .endPoint {
+    font-size: 1rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+  }
+
+}
